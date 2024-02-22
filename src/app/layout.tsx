@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import Navbar from "@/components/Navbar";
 import Providers from "@/utils/Provider";
 
 export const metadata: Metadata = {
@@ -16,7 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="flex min-h-screen flex-col items-center justify-between p-24 bg-neutral-900 text-neutral-100">
+      <body className="flex flex-col items-center justify-between px-5 bg-neutral-900 text-neutral-100">
+        <Navbar />
         <Providers> {children}</Providers>
       </body>
     </html>

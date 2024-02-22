@@ -36,7 +36,7 @@ export function Board() {
   return (
     <>
       {cards.length <= 0 ? (
-        <div>Loading...</div>
+        <div className="py-20 text-center">Loading...</div>
       ) : (
         <div className="flex h-full w-full gap-5 overflow-scroll p-12">
           <Column

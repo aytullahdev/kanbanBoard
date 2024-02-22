@@ -34,7 +34,7 @@ function Login() {
       // if the server returns a token, store the token in localStorage
       localStorage.setItem("token", data.token);
       // redirect the user to the home page
-      router.push("/");
+      router.push("/board");
     } else {
       // if the server returns an error, show the error to the user
       alert("Invalid Email or Password");
