@@ -1,36 +1,130 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Kanban Board
 
-## Getting Started
+# Tailwind classes for color combination
 
-First, run the development server:
+```
+column: active-> bg-neutral-800/50 else-> bg-neutral-800/0
+card -> border-neutral-700 bg-neutral-800 text-neutral-100
+textarea -> border-violet-400 bg-violet-400/20 text-neutral-50 placeholder-violet-300
+fire -> border-red-800 bg-red-800/20 text-red-500
+trash -> border-neutral-500 bg-neutral-500/20 text-neutral-500
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+** to color change use transition-colors
+** use motion.div layout and layoutId={unique} for animation
+
+# Main Logic
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```
+const handleDragStart = (e, card) => {
+   e.dataTransfer.setData("cardId", card.id);
+ };
+ const handleDragOver = (e) => {
+   e.preventDefault();
+   highlightIndicator(e);
+   setActive(true);
+ };
+ const highlightIndicator = (e) => {
+   const indicators = getIndicators();
+   clearHightLights(indicators);
+   const el = getNearestIndicator(e, indicators);
+   el.element.style.opacity = "1";
+ };
+ const getIndicators = () => {
+   return Array.from(document.querySelectorAll(`[data-column="${column}"]`));
+ };
+ const clearHightLights = (els) => {
+   const indicators = els || getIndicators();
+   indicators.forEach((i) => {
+     i.style.opacity = "0";
+   });
+ };
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+ const getNearestIndicator = (e, indicators) => {
+   const DISTANCE_OFFSET = 50;
+   const el = indicators.reduce(
+     (closest, child) => {
+       const box = child.getBoundingClientRect();
+       const offset = e.clientY - (box.top + DISTANCE_OFFSET);
+       if (offset < 0 && offset > closest.offset) {
+         return { offset: offset, element: child };
+       } else {
+         return closest;
+       }
+     },
+     {
+       offset: Number.NEGATIVE_INFINITY,
+       element: indicators[indicators.length - 1],
+     }
+   );
+   return el;
+ };
+ const handleDragLeave = () => {
+   setActive(false);
+   clearHightLights();
+ };
+ const handleDragEnd = (e) => {
+   setActive(false);
+   clearHightLights();
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+   const cardId = e.dataTransfer.getData("cardId");
+   const indicators = getIndicators();
+   const { element } = getNearestIndicator(e, indicators);
+   const before = element.dataset.before || "-1";
+   if (before !== cardId) {
+     let copy = [...cards];
+     let cardTotransfer = copy.find((c) => c.id === cardId);
+     if (!cardTotransfer) return;
+     cardTotransfer = { ...cardTotransfer, column };
+     copy = copy.filter((c) => c.id !== cardId);
+     const moveToBack = before === "-1";
+     if (moveToBack) {
+       copy.push(cardTotransfer);
+     } else {
+       const insertAtIndex = copy.findIndex((el) => el.id === before);
+       if (insertAtIndex === undefined) return;
+       copy.splice(insertAtIndex, 0, cardTotransfer);
+     }
+     setCards(copy);
+   }
+ };
+```
 
-To learn more about Next.js, take a look at the following resources:
+Drop Indicator
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+````
+  function DropIndicator({ beforeId, column }) {
+  return (
+    <div
+      data-before={beforeId || "-1"}
+      data-column={column}
+      className="my-0.5 h-0.5 w-full bg-violet-400 opacity-0"
+    ></div>
+  );
+}
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+{filterCards.map((c) => {
+          return <Card key={c.id} {...c} handleDragStart={handleDragStart} />;
+        })}
+<DropIndicator beforeId={-1} column={column} />
+        ```
+````
 
-## Deploy on Vercel
+\*\* Trash Box
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
+const handleDragOver = (e) => {
+    e.preventDefault();
+    setActive(true);
+  };
+  const handleDragLeave = () => {
+    setActive(false);
+  };
+  const handleDragEnd = (e) => {
+    const cardId = e.dataTransfer.getData("cardId");
+    console.log(cardId);
+    setActive(false);
+    setCards((prev) => prev.filter((c) => c.id !== cardId));
+  };
+```

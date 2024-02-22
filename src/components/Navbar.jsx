@@ -1,4 +1,5 @@
 "use client";
+import { storage } from "@/libs/storage";
 import Link from "next/link";
 import React from "react";
 
@@ -9,10 +10,10 @@ const Navbar = () => {
       <nav className="flex flex-row gap-5 justify-center items-center">
         <Link href={"/"}>Home</Link>
         <Link href={"/board"}>Board</Link>
-        {localStorage.getItem("token") ? (
+        {storage.getToken() ? (
           <button
             onClick={() => {
-              localStorage.removeItem("token");
+              storage.clearToken();
             }}
           >
             Logout

@@ -2,6 +2,7 @@
 import React from "react";
 import axios from "@/libs/axios";
 import { useRouter } from "next/navigation";
+import { storage } from "@/libs/storage";
 function Login() {
   const router = useRouter();
   const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -32,7 +33,7 @@ function Login() {
 
     if (data && data.token) {
       // if the server returns a token, store the token in localStorage
-      localStorage.setItem("token", data.token);
+      storage.setToken(data.token);
       // redirect the user to the home page
       router.push("/board");
     } else {

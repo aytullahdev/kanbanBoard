@@ -1,4 +1,5 @@
-import Axios, { AxiosError } from "axios";
+import Axios from "axios";
+import { storage } from "./storage";
 
 const axios = Axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -6,7 +7,7 @@ const axios = Axios.create({
 });
 
 axios.interceptors.request.use((config) => {
-    const token = localStorage.getItem("token");
+    const token = storage.getToken();
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
 
