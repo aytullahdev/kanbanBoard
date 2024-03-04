@@ -7,11 +7,11 @@ const axios = Axios.create({
 });
 
 axios.interceptors.request.use((config) => {
-    const token = storage.getToken();
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+    // set withCredentials to true to send cookies with requests
+    config.withCredentials = true;
+    // Allow Access-Control-Allow-Origin
 
-    }
+
     return config;
 
 

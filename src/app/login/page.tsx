@@ -2,9 +2,10 @@
 import React from "react";
 import axios from "@/libs/axios";
 import { useRouter } from "next/navigation";
-import { storage } from "@/libs/storage";
+import { useAuth } from "@/context/AuthContext";
 function Login() {
   const router = useRouter();
+  const { logIn } = useAuth();
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     // get the Email and Password from the form
@@ -33,7 +34,7 @@ function Login() {
 
     if (data && data.token) {
       // if the server returns a token, store the token in localStorage
-      storage.setToken(data.token);
+      logIn(data.token);
       // redirect the user to the home page
       router.push("/board");
     } else {

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "@/libs/axios";
 import Column from "./Column";
 import TrashBox from "./TrashBox";
+
 export default function KanbanBoard() {
   return (
     <div className="h-screen w-full bg-neutral-900 text-neutral-50">
