@@ -1,4 +1,5 @@
 "use client";
+import axios from "@/libs/axios";
 import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
 export const AuthContext = createContext();
@@ -30,13 +31,16 @@ const AuthContextProvider = ({ children }) => {
     }));
   };
   // Logout function delete the token from cookie storage
-  const logOut = () => {
+  const logOut = async () => {
     localStorage.removeItem("token");
-    push("/login");
-    setUser((prev) => ({
-      ...prev,
-      isLoggedIn: false,
-    }));
+    const result = await axios.post("/auth/logout");
+    if (result.status === 200) {
+      push("/login");
+      setUser((prev) => ({
+        ...prev,
+        isLoggedIn: false,
+      }));
+    }
   };
   return (
     <AuthContext.Provider value={{ user, logOut, logIn }}>
