@@ -5,7 +5,7 @@ export const getBoardData = async () => {
     return axios.get("/board").then((res) => res.data);
 };
 
-export function useGetBoardData(config) {
+export default function useGetBoardData(config) {
     return useQuery({
         queryKey: ["boardData"],
         queryFn: () => getBoardData(),

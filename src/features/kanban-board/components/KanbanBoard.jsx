@@ -14,12 +14,14 @@ export default function KanbanBoard() {
 
 export function Board() {
   const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // annonomus async function
     try {
       (async () => {
         await axios.get("/board").then((res) => {
+          setLoading(false);
           setCards(
             res.data.tasks.map((t) => ({
               ...t,
@@ -36,7 +38,7 @@ export function Board() {
 
   return (
     <>
-      {cards.length <= 0 ? (
+      {loading ? (
         <div className="py-20 text-center">Loading...</div>
       ) : (
         <div className="flex h-full w-full gap-5 overflow-scroll p-12">

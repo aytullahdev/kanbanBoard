@@ -2,6 +2,7 @@ import { useState } from "react";
 import {} from "react-icons/fa";
 import { FiPlus } from "react-icons/fi";
 import { motion } from "framer-motion";
+import axios from "@/libs/axios";
 
 export default function AddCard({ column, setCards }) {
   const [text, setText] = useState("");

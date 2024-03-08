@@ -4,6 +4,7 @@ import axios from "@/libs/axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Cookies from "js-cookie";
+import Link from "next/link";
 function Login() {
   const router = useRouter();
   const { logIn } = useAuth();
@@ -67,6 +68,7 @@ function Login() {
           >
             Login
           </button>
+          <Link href="/signup">Create an account</Link>
         </form>
       </div>
     </div>
