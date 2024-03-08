@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import axios from "@/libs/axios";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 function Login() {
@@ -30,7 +30,11 @@ function Login() {
     formData.append("password", password);
 
     // send the Email and Password to the server
-    const { data } = await axios.post(`/auth/login`, formData);
+    //const { data } = await axios.post(`/auth/login`, formData);
+
+    // Send request to api/login
+
+    const { data } = await axios.post(`/api/login`, formData);
 
     if (data && data.token) {
       // if the server returns a token, store the token in localStorage
