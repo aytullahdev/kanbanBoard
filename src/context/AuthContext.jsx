@@ -2,6 +2,7 @@
 import axios from "@/libs/axios";
 import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import Cookies from "js-cookie";
 export const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
@@ -33,6 +34,7 @@ const AuthContextProvider = ({ children }) => {
   // Logout function delete the token from cookie storage
   const logOut = async () => {
     localStorage.removeItem("token");
+    Cookies.remove("user");
     const result = await axios.post("/auth/logout");
     if (result.status === 200) {
       push("/login");

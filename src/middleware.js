@@ -5,9 +5,8 @@ export function middleware(request) {
 
 
     const response = NextResponse.next();
-    const hasToken = cookies().has('token');
+    const hasToken = cookies().has('user');
 
-    console.log(cookies())
     if (!hasToken) {
         return NextResponse.redirect(new URL('/login', request.url))
     }

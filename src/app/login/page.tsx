@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
-import axios from "axios";
+import axios from "@/libs/axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
+import Cookies from "js-cookie";
 function Login() {
   const router = useRouter();
   const { logIn } = useAuth();
@@ -30,16 +31,13 @@ function Login() {
     formData.append("password", password);
 
     // send the Email and Password to the server
-    //const { data } = await axios.post(`/auth/login`, formData);
-
-    // Send request to api/login
-
-    const { data } = await axios.post(`/api/login`, formData);
+    const { data } = await axios.post(`/auth/login`, formData);
 
     if (data && data.token) {
       // if the server returns a token, store the token in localStorage
       logIn(data.token);
-      // redirect the user to the home page
+      Cookies.set("user", data.token);
+      // redirect the user to the board page with a cookie
       router.push("/board");
     } else {
       // if the server returns an error, show the error to the user
