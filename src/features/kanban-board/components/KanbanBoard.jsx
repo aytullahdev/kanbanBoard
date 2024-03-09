@@ -6,7 +6,7 @@ import TrashBox from "./TrashBox";
 
 export default function KanbanBoard() {
   return (
-    <div className="h-screen w-full bg-neutral-900 text-neutral-50">
+    <div className="w-full bg-neutral-900 text-neutral-50">
       <Board />
     </div>
   );
@@ -41,7 +41,7 @@ export function Board() {
       {loading ? (
         <div className="py-20 text-center">Loading...</div>
       ) : (
-        <div className="flex h-full w-full gap-5 overflow-scroll p-12">
+        <div className="flex  w-full gap-5 overflow-scroll p-12">
           <Column
             title="Backlog"
             column="backlog"

@@ -7,7 +7,9 @@ import axios from "@/libs/axios";
 export default function AddCard({ column, setCards }) {
   const [text, setText] = useState("");
   const [adding, setAdding] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (!text.trim().length) return;
     const newCard = {
@@ -28,6 +30,8 @@ export default function AddCard({ column, setCards }) {
       setCards((prev) => [...prev, newCard]);
       setAdding(false);
     }
+    setText("");
+    setLoading(false);
   };
   return (
     <>
@@ -47,10 +51,11 @@ export default function AddCard({ column, setCards }) {
               Close
             </button>
             <button
+              disabled={loading}
               type="submit"
               className="flex items-center gap-1.5 rounded bg-neutral-50 px-3 py-1.5 text-xs text-neutral-950 transition-colors hover:bg-neutral-300"
             >
-              <spa>Add</spa>
+              <span>Add</span>
               <FiPlus />
             </button>
           </div>

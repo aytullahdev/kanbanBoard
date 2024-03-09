@@ -4,7 +4,7 @@ import axios from "@/libs/axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import Cookies from "js-cookie";
-
+import { motion } from "framer-motion";
 function Signup() {
   const router = useRouter();
   const { logIn } = useAuth();
@@ -59,9 +59,18 @@ function Signup() {
       console.error("Signup error:", error);
     }
   };
-
+  const swipeVariants = {
+    hidden: { opacity: 0, x: "-100%" },
+    visible: { opacity: 1, x: 0 },
+  };
   return (
-    <div className="py-20">
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={swipeVariants}
+      transition={{ duration: 0.4 }}
+      className="py-20"
+    >
       <div className="border border-neutral-700 bg-neutral-800 text-neutral-100 w-[400px] h-[300px] mx-auto">
         <h1 className="text-2xl text-center py-4">Signup</h1>
         <form className="flex flex-col gap-5 p-4" onSubmit={handleSubmit}>
@@ -89,7 +98,7 @@ function Signup() {
           </button>
         </form>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
